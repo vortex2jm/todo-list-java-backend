@@ -1,1 +1,1 @@
-To-do list backend using Java Spring Boot :gear:
+To-do list REST API using Java Spring Boot :fallen_leaf:
