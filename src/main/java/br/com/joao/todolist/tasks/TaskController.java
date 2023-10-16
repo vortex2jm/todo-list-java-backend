@@ -34,4 +34,12 @@ public class TaskController {
         var foundTasks = this.taskSerivice.find((UUID)request.getAttribute("userId")); 
         return ResponseEntity.status(200).body(foundTasks);
     }
+
+    // TODO============================================
+    // Update method with verifications and validations
+    // Mix request body with saved user in database
+    // *The user can modify only your tasks*
+    // Take care about the title lenght
+    // Add exception handlers in all layers
+    // Add Dto layer to User Domain
 }
