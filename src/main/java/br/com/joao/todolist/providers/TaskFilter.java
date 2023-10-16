@@ -37,14 +37,21 @@ public class TaskFilter extends OncePerRequestFilter{
 
             var user = this.userRepo.findByUsername(username);
             if(user == null){
-                response.sendError(401, "User without authorization");
+                response.sendError(401);
             }
-            var passwordVerify = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
-            if(passwordVerify.verified){
-                filterChain.doFilter(request, response);
+            else{
+                var passwordVerify = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
+                
+                if(passwordVerify.verified){
+                    filterChain.doFilter(request, response);
+                } 
+                else{
+                    response.sendError(401);
+                }
             }
-            response.sendError(401, "User without authorization");
+        } 
+        else{
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
     }
 }
