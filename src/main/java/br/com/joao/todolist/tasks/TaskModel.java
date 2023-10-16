@@ -1,6 +1,5 @@
 package br.com.joao.todolist.tasks;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -30,5 +29,5 @@ public class TaskModel {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    // private LocalDateTime date;
+    private UUID userId;
 }

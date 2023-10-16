@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import br.com.joao.todolist.user.UserModel;
 import br.com.joao.todolist.user.interfaces.IUSerRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +27,7 @@ public class TaskFilter extends OncePerRequestFilter{
         
         var servletPath = request.getServletPath();
         
-        if(servletPath.equals("/tasks/")){
+        if(servletPath.startsWith("/tasks/")){
             var auth = request.getHeader("Authorization");
             auth = auth.substring("Basic".length()).trim();
             byte[] decodedAuth = Base64.getDecoder().decode(auth);
@@ -34,23 +35,22 @@ public class TaskFilter extends OncePerRequestFilter{
             String[] credentials = decodedString.split(":");
             String username = credentials[0];
             String password = credentials[1];
+            
+            UserModel user = this.userRepo.findByUsername(username);
 
-            var user = this.userRepo.findByUsername(username);
             if(user == null){
                 response.sendError(401);
-            }
-            else{
+            } else {
                 var passwordVerify = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
                 
                 if(passwordVerify.verified){
+                    request.setAttribute("userId", user.getId());
                     filterChain.doFilter(request, response);
-                } 
-                else{
+                } else {
                     response.sendError(401);
                 }
             }
-        } 
-        else{
+        } else {
             filterChain.doFilter(request, response);
         }
     }

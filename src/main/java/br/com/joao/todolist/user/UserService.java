@@ -14,7 +14,7 @@ public class UserService {
 
     public UserModel create(UserModel user){
 
-        UserModel foundUser = this.userRepository.findByUsername(user.getUsername());
+        var foundUser = this.userRepository.findByUsername(user.getUsername());
 
         if(foundUser != null)  //If user already exists
             return null;
@@ -22,8 +22,6 @@ public class UserService {
         var hashPassword = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
         user.setPassword(hashPassword);
 
-        foundUser = this.userRepository.save(user);
-        return user;
+        return this.userRepository.save(user);
     }    
-
 }
