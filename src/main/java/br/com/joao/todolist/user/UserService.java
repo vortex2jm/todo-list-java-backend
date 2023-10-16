@@ -3,7 +3,8 @@ package br.com.joao.todolist.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.joao.todolist.IUSerRepository;
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import br.com.joao.todolist.user.interfaces.IUSerRepository;
 
 @Service
 public class UserService {
@@ -17,6 +18,9 @@ public class UserService {
 
         if(foundUser != null)  //If user already exists
             return null;
+
+        var hashPassword = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
+        user.setPassword(hashPassword);
 
         foundUser = this.userRepository.save(user);
         return user;

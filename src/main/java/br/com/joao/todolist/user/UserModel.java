@@ -21,9 +21,11 @@ public class UserModel {
 
     // @Column(name = "pipipopo") - If you wanna change the column name in database
     
-    @Column(unique = true)
     private String name;
+
+    @Column(unique = true)
     private String username;
+    
     private String password;
 
     @CreationTimestamp

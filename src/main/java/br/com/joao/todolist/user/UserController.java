@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.joao.todolist.providers.HttpJsonResponseMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,10 @@ public class UserController {
 
         UserModel user = this.userService.create(userModel);
         if(user == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This user already exists");
+            var resp = new HttpJsonResponseMessage(400, "This user already exists!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }   
 
